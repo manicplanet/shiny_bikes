@@ -58,23 +58,23 @@ shinyServer(function(input, output){
                  output$city_bike_map <- renderLeaflet({
                    leaflet(cities_max_bike) %>%
                      addTiles() %>%
-                     addCircleMarkers(lng = ~LNG, lat = ~LAT, 
+                     addMarkers(lng = ~LNG, lat = ~LAT, 
                                       radius= ~ifelse(BIKE_PREDICTION_LEVEL=='small', 6, 12),
                                       color = ~color_levels(BIKE_PREDICTION_LEVEL),
                                       stroke = FALSE,
                                       fillOpacity = 0.8,
                                       label=~CITY_ASCII,
-                                      popup = cities_max_bike$DETAILED_LABEL)
+                                      popup = filteredData$DETAILED_LABEL)
                  
                  })
               
                    #add a temperature trend plot using renderPlot(...) function with following configurations:
                  output$temp_line <- renderPlot({
-                   ggplot(city_weather_bike_df, aes(FORECASTDATETIME, TEMPERATURE, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
+                   ggplot(filteredData, aes(FORECASTDATETIME, TEMPERATURE, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
                    
                  })
                  output$bike_line <- renderPlot({
-                   ggplot(city_weather_bike_df, aes(FORECASTDATETIME, BIKE_PREDICTION, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
+                   ggplot(filteredData, aes(FORECASTDATETIME, BIKE_PREDICTION, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
                    
                  })
                  }
