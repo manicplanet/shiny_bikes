@@ -38,20 +38,15 @@ shinyServer(function(input, output){
                    leaflet(cities_max_bike) %>%
                      addTiles() %>%
                      addCircleMarkers(data = cities_max_bike, lng = cities_max_bike$LNG, lat = cities_max_bike$LAT, popup = cities_max_bike$LABEL )
-                 
-                   
-                   }    )    
-               
-                 output$temp_line <- renderPlot({
+                   })    
                    output$temp_line <- renderPlot({
                      ggplot(city_weather_bike_df, aes(FORECASTDATETIME, TEMPERATURE, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
-                     
-                   }) } )
-              
-                 output$bike_line <- renderPlot({
+                   })  
+                   output$bike_line <- renderPlot({
                    ggplot(city_weather_bike_df, aes(FORECASTDATETIME, BIKE_PREDICTION, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
                    
-                 })
+                   }) 
+                    
                  
                   #one marker on the map and popup DETAILED_LABEL 
                }     else  {
@@ -59,28 +54,22 @@ shinyServer(function(input, output){
                    leaflet(cities_max_bike) %>%
                      addTiles() %>%
                      addMarkers(lng = ~LNG, lat = ~LAT, 
-                                      radius= ~ifelse(BIKE_PREDICTION_LEVEL=='small', 6, 12),
-                                      color = ~color_levels(BIKE_PREDICTION_LEVEL),
-                                      stroke = FALSE,
-                                      fillOpacity = 0.8,
-                                      label=~CITY_ASCII,
-                                      popup = filteredData$DETAILED_LABEL)
-                 
+                                      radius= ~ifelse(BIKE_PREDICTION_LEVEL=='small', 6, 12),color = ~color_levels(BIKE_PREDICTION_LEVEL),stroke = FALSE,
+                                      fillOpacity = 0.8,label=~CITY_ASCII,popup = city_weather_bike_df$DETAILED_LABEL)
                  })
-              
                    #add a temperature trend plot using renderPlot(...) function with following configurations:
                  output$temp_line <- renderPlot({
-                   ggplot(filteredData, aes(FORECASTDATETIME, TEMPERATURE, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
+                   ggplot(city_weather_bike_df, aes(FORECASTDATETIME, TEMPERATURE, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
                    
                  })
                  output$bike_line <- renderPlot({
-                   ggplot(filteredData, aes(FORECASTDATETIME, BIKE_PREDICTION, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()
-                   
-                 })
-                 }
-  )
-}      
-  )   
+                   ggplot(city_weather_bike_df, aes(FORECASTDATETIME, BIKE_PREDICTION, label = TEMPERATURE)) + geom_line() + geom_point() + geom_text()}) 
+                 
+                                                                }
+              
+               ) } ) 
+  
+    
 
 
 

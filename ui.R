@@ -13,8 +13,10 @@ shinyUI(
     mainPanel(leafletOutput("city_bike_map")),
     # Create a side bar to show detailed plots for a city
     sidebarPanel(selectInput(inputId="city_dropdown", "Choose City", c("All", "Seoul", "Suzhou", "London", "New York", "Paris")),
-    plotOutput(temp_line)) 
+    plotOutput("temp_line"),
+    plotOutput("bike_line"))
  
       
     )
-))
+)
+)
